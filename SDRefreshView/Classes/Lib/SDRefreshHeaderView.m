@@ -61,7 +61,7 @@
     
     // 手动刷新
     if (self.isManuallyRefreshing && !_hasLayoutedForManuallyRefreshing && self.scrollView.contentInset.top > 0) {
-        self.activityIndicatorView.hidden = NO;
+        //self.activityIndicatorView.hidden = NO;
         
         // 模拟下拉操作
         CGPoint temp = self.scrollView.contentOffset;
@@ -78,7 +78,7 @@
 
 - (void)beginRefreshing
 {
-    self.isManuallyRefreshing = YES;
+    self.isManuallyRefreshing = NO;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -92,12 +92,12 @@
     if ((y > 0) || (self.scrollView.bounds.size.height == 0)) return;
     
     // 触发SDRefreshViewStateRefreshing状态
-    if (y >= criticalY && (self.refreshState == SDRefreshViewStateWillRefresh)) {
-        [self setRefreshState:SDRefreshViewStateRefreshing];
+    if (y >= criticalY && (SDRefreshViewStateWillRefresh == self.refreshState) ) {
+        [self setRefreshState:SDRefreshViewStateCancel];
     }
     
     // 触发SDRefreshViewStateWillRefresh状态
-    if (y < criticalY && (SDRefreshViewStateNormal == self.refreshState)) {
+    if (y < criticalY ) {
         [self setRefreshState:SDRefreshViewStateWillRefresh];
     }
 }

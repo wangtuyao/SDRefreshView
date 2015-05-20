@@ -165,12 +165,23 @@ CGFloat const SDTimeIndicatorMargin = 10.0f;
         }
             break;
             
+        case SDRefreshViewStateCancel:
+        {
+            _textIndicator.text = SDRefreshViewRefreshingStateText;
+            [UIView animateWithDuration:0.2 animations:^{
+                _stateIndicatorView.transform = CGAffineTransformMakeRotation(self.stateIndicatorViewNormalTransformAngle);
+            }];
+        }
+            break;
+            
         case SDRefreshViewStateWillRefresh:
         {
+            
             _textIndicator.text = SDRefreshViewWillRefreshStateText;
-            [UIView animateWithDuration:0.5 animations:^{
+            [UIView animateWithDuration:0.2 animations:^{
                 _stateIndicatorView.transform = CGAffineTransformMakeRotation(self.stateIndicatorViewWillRefreshStateTransformAngle);
             }];
+            
         }
             break;
             

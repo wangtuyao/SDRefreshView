@@ -22,7 +22,8 @@
 typedef enum {
     SDRefreshViewStateWillRefresh,
     SDRefreshViewStateRefreshing,
-    SDRefreshViewStateNormal
+    SDRefreshViewStateNormal,
+    SDRefreshViewStateCancel
 } SDRefreshViewState;
 
 #define SDRefreshViewMethodIOS7 ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0)
