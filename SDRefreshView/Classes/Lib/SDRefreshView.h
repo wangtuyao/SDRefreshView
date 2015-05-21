@@ -37,6 +37,8 @@ typedef enum {
 // 进入即将刷新状态时的提示文字
 #define SDRefreshViewWillRefreshStateText @"松开即可加载最新数据"
 
+
+
 // ---------------------------配置----------------------------------
 
 @interface SDRefreshView : UIView

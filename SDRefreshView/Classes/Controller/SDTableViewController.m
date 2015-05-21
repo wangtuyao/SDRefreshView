@@ -41,6 +41,7 @@
         self.tableView.separatorColor = [UIColor whiteColor];
         // 模拟数据
         _totalRowCount = 3;
+
     }
     return self;
 }
@@ -57,6 +58,7 @@
 - (void)setupHeader
 {
     SDRefreshHeaderView *refreshHeader = [SDRefreshHeaderView refreshView];
+    self.refreshHeader=refreshHeader;
     
     // 默认是在navigationController环境下，如果不是在此环境下，请设置 refreshHeader.isEffectedByNavigationController = NO;
     [refreshHeader addToScrollView:self.tableView];
@@ -90,6 +92,14 @@
         [self.tableView reloadData];
         [self.refreshFooter endRefreshing];
     });
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.refreshHeader sdRefreshScrollViewDidScroll:scrollView];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    [self.refreshHeader egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 #pragma mark - Table view data source

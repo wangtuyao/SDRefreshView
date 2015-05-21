@@ -105,7 +105,6 @@ CGFloat const SDTimeIndicatorMargin = 10.0f;
 - (void)addToScrollView:(UIScrollView *)scrollView
 {
     _scrollView = scrollView;
-    
     [_scrollView addSubview:self];
     [_scrollView addObserver:self forKeyPath:SDRefreshViewObservingkeyPath options:NSKeyValueObservingOptionNew context:nil];
     
@@ -164,16 +163,7 @@ CGFloat const SDTimeIndicatorMargin = 10.0f;
             }
         }
             break;
-            
-        case SDRefreshViewStateCancel:
-        {
-            _textIndicator.text = SDRefreshViewRefreshingStateText;
-            [UIView animateWithDuration:0.2 animations:^{
-                _stateIndicatorView.transform = CGAffineTransformMakeRotation(self.stateIndicatorViewNormalTransformAngle);
-            }];
-        }
-            break;
-            
+      
         case SDRefreshViewStateWillRefresh:
         {
             
@@ -185,13 +175,17 @@ CGFloat const SDTimeIndicatorMargin = 10.0f;
         }
             break;
             
-        case SDRefreshViewStateNormal:
+        case SDRefreshViewStateNormal:{
             _textIndicator.text = self.textForNormalState;
+            [UIView animateWithDuration:0.2 animations:^{
+                _stateIndicatorView.transform = CGAffineTransformMakeRotation(self.stateIndicatorViewNormalTransformAngle);
+            }];
             _stateIndicatorView.transform = CGAffineTransformMakeRotation(self.stateIndicatorViewNormalTransformAngle);
             _timeIndicator.text = [NSString stringWithFormat:@"最后更新：%@", [self lastRefreshingTimeString]];
             _stateIndicatorView.hidden = NO;
             [_activityIndicatorView stopAnimating];
             _activityIndicatorView.hidden = YES;
+        }
             break;
             
         default:
@@ -212,6 +206,7 @@ CGFloat const SDTimeIndicatorMargin = 10.0f;
     }];
 }
 
+
 // 更新时间
 - (NSString *)refreshingTimeString
 {
@@ -219,6 +214,13 @@ CGFloat const SDTimeIndicatorMargin = 10.0f;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"HH:mm";
     return [formatter stringFromDate:date];
+}
+
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset{
+    
 }
 
 // 保留！

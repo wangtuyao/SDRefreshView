@@ -81,25 +81,54 @@
     self.isManuallyRefreshing = NO;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if (![keyPath isEqualToString:SDRefreshViewObservingkeyPath]) return;
+
+- (void)sdRefreshScrollViewDidScroll:(UIScrollView *)scrollView {
     
-    CGFloat y = [change[@"new"] CGPointValue].y;
-    CGFloat criticalY = -self.sd_height - self.scrollView.contentInset.top;
+    CGFloat y =scrollView.contentOffset.y;
+    CGFloat criticalY = -70;
     
-    // 只有在 y<=0 以及 scrollview的高度不为0 时才判断
-    if ((y > 0) || (self.scrollView.bounds.size.height == 0)) return;
-    
-    // 触发SDRefreshViewStateRefreshing状态
-    if (y >= criticalY && (SDRefreshViewStateWillRefresh == self.refreshState) ) {
-        [self setRefreshState:SDRefreshViewStateCancel];
+    if (y>0||scrollView.bounds.size.height==0) {
+        return;
     }
     
-    // 触发SDRefreshViewStateWillRefresh状态
-    if (y < criticalY ) {
+    if (y>=criticalY&&(self.refreshState==SDRefreshViewStateWillRefresh)) {
+         [self setRefreshState:SDRefreshViewStateNormal];
+    }
+    if (y<criticalY&&(self.refreshState==SDRefreshViewStateNormal)) {
         [self setRefreshState:SDRefreshViewStateWillRefresh];
     }
+    
+}
+- (void)egoRefreshScrollViewDidEndDragging:(UIScrollView *)scrollView {
+    
+    if (self.refreshState==SDRefreshViewStateWillRefresh) {
+        [self setRefreshState:SDRefreshViewStateRefreshing];
+    }
+}
+
+
+
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+//    if (![keyPath isEqualToString:SDRefreshViewObservingkeyPath]) return;
+//    
+//    CGFloat y = [change[@"new"] CGPointValue].y;
+//    CGFloat criticalY = -self.sd_height - self.scrollView.contentInset.top;
+//    
+//    // 只有在 y<=0 以及 scrollview的高度不为0 时才判断
+//    if ((y > 0) || (self.scrollView.bounds.size.height == 0)) return;
+//    
+//    // 触发SDRefreshViewStateRefreshing状态
+//    if (y >= criticalY && (SDRefreshViewStateWillRefresh == self.refreshState) ) {
+//        [self setRefreshState:SDRefreshViewStateNormal];
+//    }
+//    
+//    // 触发SDRefreshViewStateWillRefresh状态
+//    if (y < criticalY ) {
+//        [self setRefreshState:SDRefreshViewStateWillRefresh];
+//    }
 }
 
 @end
